@@ -54,17 +54,32 @@ def getNote(request, pk):
     serializer = NoteSerializer(notes, many=False)
     return Response(serializer.data)
 
+
+@api_view(['POST'])
+def createNote(request):
+    data = request.data
+    note = Note.objects.create(
+        body=data['body']
+
+    )
+    serializer = NoteSerializer(note, many=False)
+    return Response(serializer.data)
+
+
 @api_view(['PUT'])
 def updateNote(request, pk):
-    data = request.data
-    note = Note.objects.get(id=pk)
-    serializer= NoteSerializer(instance = note, data=data)
+    try:
+        note = Note.objects.get(id=pk)
+    except Note.DoesNotExist:
+        return Response({'error': 'Note not found'}, status=404)
+
+    serializer = NoteSerializer(instance=note, data=request.data)
 
     if serializer.is_valid():
         serializer.save()
-
-
-    return Response(serializer.data)
+        return Response(serializer.data)
+    else:
+        return Response(serializer.errors, status=400)
 
 
 @api_view(['DELETE'])

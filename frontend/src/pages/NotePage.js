@@ -5,7 +5,7 @@ import { ReactComponent as ArrowLeft } from "../assets/arrow-left.svg";
 const NotePage = () => {
   const { id } = useParams();
   const navigate = useNavigate();
-  const [note, setNote] = useState({ body: "" }); // always an object
+  const [note, setNote] = useState({ body: "" });
 
   // Fetch note if editing existing
   useEffect(() => {
@@ -13,7 +13,7 @@ const NotePage = () => {
       if (id === "new") return;
 
       try {
-        const response = await fetch(`/api/note/${id}/`);
+        const response = await fetch(`/api/notes/${id}/`);
         if (!response.ok) throw new Error("Note not found");
         const data = await response.json();
         setNote(data);
@@ -28,7 +28,7 @@ const NotePage = () => {
   // Update existing note
   const updateNote = async () => {
     try {
-      const response = await fetch(`/api/note/${id}/update/`, {
+      const response = await fetch(`/api/notes/${id}/`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(note),
@@ -46,7 +46,7 @@ const NotePage = () => {
   // Delete note
   const deleteNote = async () => {
     try {
-      const response = await fetch(`/api/note/${id}/delete/`, {
+      const response = await fetch(`/api/notes/${id}/`, {
         method: "DELETE",
       });
 
@@ -63,7 +63,7 @@ const NotePage = () => {
   // Create new note
   const createNote = async () => {
     try {
-      const response = await fetch(`/api/note/create/`, {
+      const response = await fetch(`/api/notes/`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(note),
@@ -88,7 +88,7 @@ const NotePage = () => {
       await createNote();
     }
 
-    navigate("/"); // always go back after action
+    navigate("/");
   };
 
   return (

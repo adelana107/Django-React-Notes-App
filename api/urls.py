@@ -2,14 +2,7 @@ from django.urls import path
 from . import views
 
 urlpatterns = [
-    path("", views.getRoutes, name="routes"),
-    path("notes/", views.getNotes, name="notes"),
-    path("note/create/", views.createNote, name="create-notes"),
-
-    path("note/<str:pk>/", views.getNote, name="note"),
-    path("note/<str:pk>/update/", views.updateNote, name="update-note"),
-    path("note/<str:pk>/delete/", views.deleteNote, name="delet-note"),
-
-
-
+    path("", views.getRoutes, name="routes"),               # GET /api/
+    path("notes/", views.notes_list, name="notes_list"),    # GET / POST /api/notes/
+    path("notes/<int:pk>/", views.notes_detail, name="notes_detail"),  # GET/PUT/DELETE /api/notes/<id>/
 ]
